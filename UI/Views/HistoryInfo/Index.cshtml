@@ -1,0 +1,36 @@
+﻿@model IQueryable<Model.T_Device_IP_History_Information>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <th>主机名</th>
+                <th>IP</th>
+                <th>设备名称</th>
+                <th>是否ping通</th>
+                <th>运行时间</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.device_coding</td>
+                    <td>@item.ip</td>
+                    <td>@item.device_name</td>
+                    <td>@item.ping_tag</td>
+                    <td>@item.ping_time</td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

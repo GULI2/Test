@@ -1,0 +1,217 @@
+﻿@model IQueryable<Model.T_Device_IP_Information>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/layui/layui.js"></script>
+
+
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+
+    <script>
+
+        /*
+        $(function(){
+            LoadList(1);
+        });
+
+        function GoPage(pageIndex) {
+            LoadList(pageIndex);
+        }
+        */
+        @*
+        function LoadList(pageIndex) {
+            $.getJSON(
+                '@Url.Action("LoadList","DeviceInfo")',//请求URL
+                {
+                    pageSize:100,
+                    pageIndex:pageIndex
+                },//传参，可选参数
+                function (list1) {//list1对应DeviceInfoController中的temp
+                    var list = $('#list');//Jquery中的ID选择器,id 引用 HTML 元素的 id 属性。相同的 id 值只能在文档中使用一次
+                    list.empty();
+                    $.each(list1.list, function (index, item) {//$.each处理json
+                        var dt = GetDateFormat(item.pingTime.toString());
+                        list.append('<tr><td>' + item.deviceCode + '</td>' +
+                            '<td>' + item.ip + '</td>' +
+                            '<td>' + item.deviceName + '</td>' +
+                            '<td>' + item.pingTag + '</td>' +
+                            '<td>' + dt + '</td>' +
+                            '<td><a href="@Url.Action("Edit","DeviceInfo")?deviceCode=' + item.deviceCode + '">修改</a></td>' +
+                            '<td><a href="@Url.Action("Remove","DeviceInfo")?deviceCode=' + item.deviceCode + '">删除</a></td></tr>')
+                    });
+                    //加上分页字符串
+                        list.append('<tr><td colspan=5>'+list1.pager+'</td></tr>');
+                }//回调函数，可选参数
+            );
+        }
+                     *@
+
+        /*
+        function GetDateFormat(str) {
+            return new Date(parseInt(str.substr(6, 13))).toLocaleDateString();
+        }*/
+         
+    </script>
+
+
+    <style>
+        button {
+            width: 86px;
+            font-size: 14px;
+            border-radius: 0;
+            color: #FFF;
+            padding: 3px 0;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+
+        .buttongreen {
+            background-color: #23c6c8;
+        }
+
+        .buttonOrage {
+            background-color: #f0ad4e;
+        }
+
+        .buttonRed {
+            background-color: #e5412d;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-y: auto;
+            _overflow: auto;
+            margin: 0 0 1em;
+            table-layout: fixed;
+            text-align: center;
+        }
+
+        .breadcrumb {
+            background-color: #f3f3f4;
+            border-radius: 0;
+            padding: 10px 20px;
+            margin: -10px;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        table, td, th, tr {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            background-color: transparent;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+        }
+
+        .bgred {
+            border-radius: 55px;
+            background-color: red;
+            margin-left: 70px;
+            float: left;
+            padding: 10px;
+        }
+
+        .bggreen {
+            border-radius: 55px;
+            background-color: green;
+            margin-left: 70px;
+            float: left;
+            padding: 10px;
+        }
+
+        .searchColumn {
+            padding: 25px 0;
+            border-bottom: 1px solid #dcdcdc;
+            margin: 0;
+        }
+
+        select {
+            width: 80px;
+            height: 22px;
+        }
+    </style>
+</head>
+<body>
+ 
+     
+    <div class="breadcrumb">
+        设 备 ip 监 控：
+    </div>
+
+    <div class="searchColumn">
+        <form action=@Url.Action("Search","DeviceInfo") method="post" autocomplete="off">
+            主机名：<input type="text" name="code">
+            IP地址：<input type="text" name="IP">
+            是否ping通：
+            <select name="pingTag">
+                <option value="all">全部</option>
+                <option value="T">是</option>
+                <option value="F">否</option>
+            </select>
+            <input class="buttongreen layui-btn" style="width: 100px;margin-left: 50px;"
+                   data-toggle="modal" data-target="#myModal" type="submit" value="查询" />
+            <button class="buttongreen layui-btn" type="button" data-toggle="modal" data-target="#myModal">@Html.ActionLink("添 加", "add", "DeviceInfo")</button>
+            <button class="buttongreen layui-btn" type="button" data-toggle="modal" data-target="#myModal">@Html.ActionLink("运 行", "pingIP", "DeviceInfo")</button>
+        </form>
+    </div>
+
+    <div>
+        <!--链接名字，方法名，控制器的名称-->
+       
+        <table class="table-container" cellpadding="0" cellspacing="0">
+            <tr style="background-color: #f3f3f4;height: 40px;">
+                <td>@Html.ActionLink("主机名", "Index", new { sortOrder = ViewBag.CodeSort })</td>
+                <td>@Html.ActionLink("IP", "Index", new { sortOrder = ViewBag.ipSort })</td>
+                <td>设备名称</td>
+                <td>@Html.ActionLink("是否ping通", "Index", new { sortOrder = ViewBag.pingTagSort })</td>
+                <td>运行时间</td>
+                <td>修改</td>
+                <td>删除</td>
+                <td>历史明细</td>
+            </tr>
+            @*<tbody id="list">
+                </tbody>
+            *@
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.device_coding</td>
+                    <td>@item.ip</td>
+                    <td>@item.device_name</td>
+
+                    <td align=center>
+
+                        @if (@item.ping_tag.Trim().Equals("F"))
+                        {
+                            <div class="bgred"></div>
+                        }
+                        else
+                        {
+                            <div class="bggreen"></div>
+                        }
+
+                    </td>
+
+                    <td>@item.ping_time</td>
+                    <td style="text-align:center"><button class="buttonOrage layui-btn">@Html.ActionLink("修改", "Edit", new { deviceCode = item.device_coding }) </button></td>
+                    <td style="text-align:center"><button class="buttonRed layui-btn">@Html.ActionLink("删除", "Remove", new { deviceCode = item.device_coding }, new { onclick = "return confirm('确定删除吗？')" })</button></td>
+                    <td style="text-align:center"><button class="buttongreen layui-btn">@Html.ActionLink("历史明细", "SearchHistory", new { deviceCode = item.device_coding })</button></td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</body>
+</html>

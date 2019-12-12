@@ -1,0 +1,64 @@
+﻿@model Model.T_Device_IP_Information
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    <style>
+        .modal-header {
+            border-bottom-color: #f4f4f4;
+        }
+
+        .modal-title {
+            margin: 0;
+            line-height: 1.42857143;
+        }
+    </style>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body>
+    <div class="modal-header">
+        <h4 class="modal-title">修改：</h4>
+    </div>
+    <div>
+        @*@ViewBag.DeviceCode*@
+        @using (Html.BeginForm("Edit2", "DeviceInfo", FormMethod.Post))
+        {
+            <table cellspacing="0" contenteditable="true" style="background-color:#eeeeee;" bordercolor="#aaaaaa" border="1" cellpadding="0">
+                <tr>
+                    <th>主机名</th>
+                    <th>IP</th>
+                    <th>设备名称</th>
+                    <th hidden>是否ping通</th>
+                    <th hidden>运行时间</th>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(u => u.device_coding, new { @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(u => u.ip)
+                        @Html.ValidationMessageFor(u => u.ip)@*校验： 引用几个script ；model里添加属性*@
+                    </td>
+                    <td>@Html.TextBoxFor(u => u.device_name)</td>
+                    <td hidden>@Html.TextBoxFor(u => u.ping_tag)</td>
+                    <td hidden>@Html.TextBoxFor(u => u.ping_time)</td>
+                </tr>
+
+            </table>
+            <input type="submit" value="确定" />
+            <button>@Html.ActionLink("返回", "Index", "DeviceInfo")</button>
+        }
+
+    </div>
+</body>
+</html>

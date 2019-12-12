@@ -1,0 +1,91 @@
+﻿@model IQueryable<Model.T_Device_IP_History_Information>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SearchHistory</title>
+    <style>
+         table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        table, td, th, tr {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            background-color: transparent;
+            border: 1px solid #dcdcdc;
+            text-align: center;
+        }
+        .bgred {
+            border-radius: 55px;
+            background-color: red;
+            margin-left: 70px;
+            float: left;
+            padding: 10px;
+        }
+
+        .bggreen {
+            border-radius: 55px;
+            background-color: green;
+            margin-left: 70px;
+            float: left;
+            padding: 10px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-y: auto;
+            _overflow: auto;
+            margin: 0 0 1em;
+            table-layout: fixed;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-header">
+        <h4 class="modal-title">历史明细：</h4>
+    </div>
+    <div>
+
+        <table class="table-container" cellpadding="0" cellspacing="0">
+            <tr style="background-color: #f3f3f4;height: 40px;">
+                <td>主机名</td>
+                <td>IP</td>
+                <td>设备名称</td>
+                <td>是否ping通</td>
+                <td>运行时间</td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.device_coding</td>
+                    <td>@item.ip</td>
+                    <td>@item.device_name</td>
+                    <td align=center>
+                        @if (@item.ping_tag.Trim().Equals("F"))
+                        {
+                            <div class="bgred"></div>
+                        }
+                        else
+                        {
+                            <div class="bggreen"></div>
+                        }
+                    </td>
+                    <td>@item.ping_time</td>
+                </tr>
+
+            }
+
+        </table>
+        <button>@Html.ActionLink("返回", "Index", "DeviceInfo")</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+﻿@model Model.T_Device_IP_Information
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <script src="~/layui/layui.js"></script>
+
+
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+
+    <style>
+        
+        .buttonOrage {
+            background-color: #f0ad4e;
+        }
+        .modal-header {
+            border-bottom-color: #f4f4f4;
+        }
+
+        .modal-title {
+            margin: 0;
+            line-height: 1.42857143;
+        }
+    </style>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body>
+    <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true" aria-label="Close"><span aria-hidden="true">×</span></button>-->
+        <h4 class="modal-title">添加：</h4>
+    </div>
+    <div>
+
+        @using (Html.BeginForm("Add", "DeviceInfo", FormMethod.Post))
+        {
+            <table cellspacing="0" contenteditable="true" style="background-color:#eeeeee;" bordercolor="#aaaaaa" border="1">
+                <tr>
+                    <th>主机名</th>
+                    <th>IP</th>
+                    <th>设备名称</th>
+                    <th hidden>是否ping通</th>
+                    <th hidden>运行时间</th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(u => u.device_coding)
+                        @Html.ValidationMessageFor(u => u.device_coding)@*校验： 引用几个script ；model里添加属性*@
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(u => u.ip)
+                        @Html.ValidationMessageFor(u => u.ip)@*校验： 引用几个script ；model里添加属性*@
+                    </td>
+                    <td>@Html.TextBoxFor(u => u.device_name)</td>
+                    <td hidden>@Html.TextBoxFor(u => u.ping_tag, new { Value = "F", @readonly = "readonly" })</td>
+                    <td hidden>
+                        @Html.TextBoxFor(u => u.ping_time, new { @type = "datetime", @Value = DateTime.MinValue, @readonly = "readonly" })
+                    </td>
+                </tr>
+            </table>           
+            <input class="layui-btn layui-btn-normal" type="submit" value="确定" />
+            <button class="buttonOrage layui-btn">@Html.ActionLink("返回", "Index", "DeviceInfo")</button>
+        }
+
+    </div>
+</body>
+</html>
